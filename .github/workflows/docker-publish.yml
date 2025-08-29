@@ -1,0 +1,23 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Docker image
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USERNAME }}/your-app-name:latest
+    
+    - name: Log in to Docker Hub
+      run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+    
+    - name: Push to Docker Hub
+      run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/sms-spam-app:latest
