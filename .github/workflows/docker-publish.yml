@@ -10,13 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Debug - List all files
-      run: |
-        echo "Root directory:"
-        ls -la
-        echo "Backend directory:"
-        ls -la backend/
-    
     - name: Build Docker image
       run: docker build -f backend/Dockerfile backend --tag ${{ secrets.DOCKER_HUB_USERNAME }}/sms-spam-app:latest
     
