@@ -14,11 +14,11 @@ root/
 │  ├─ index.html        # Webpage for user input
 │  └─ script.js         # Frontend JavaScript to call backend `/predict`
 │
-├─ backend/
-│  ├─ app.py            # Flask backend serving API + frontend
-│  ├─ requirements.txt  # Python dependencies
-│  ├─ Dockerfile        # Docker setup for backend + frontend
-│  └─ models/
+├─ backend
+│├─ app.py            # Flask backend serving API + frontend
+│├─ requirements.txt  # Python dependencies
+│├─ Dockerfile        # Docker setup for backend + frontend
+│└─ models/
 │     ├─ model.pkl      # Trained machine learning model
 │     └─ vectorizer.pkl # Text vectorizer for preprocessing
 
