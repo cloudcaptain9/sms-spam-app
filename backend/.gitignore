@@ -1,0 +1,23 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Flask / backend
+*.env
+instance/
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Docker
+*.dockerignore
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/

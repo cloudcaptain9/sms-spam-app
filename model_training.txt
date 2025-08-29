@@ -1,0 +1,113 @@
+    #TRAIN YOUR MODEL IN POWERSHELL
+LOGIN POWERSHELL
+mkdir C:\Users\User\Documents\SpamApp
+cd C:\Users\User\Documents\SpamApp
+
+pip install scikit-learn pandas
+
+nano train_spam_model.py
+
+
+# peaste the script below
+          #SCRIPTS#
+
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+import pickle
+
+# Custom small dataset (10 sentences)
+data = {
+    'message': [
+        "Congratulations! You’ve won a free iPhone.",
+        "Call this number to claim your prize now.",
+        "Limited time offer on all electronics.",
+        "Meeting rescheduled to 4 PM tomorrow.",
+        "Let’s have lunch at our usual place.",
+        "Get instant loan approval, apply today.",
+        "Hey, are you coming for the party?",
+        "Free gift card for lucky winners.",
+        "Please review the attached report.",
+        "You have been selected for a special reward.",
+        "Don’t miss this exclusive discount.",
+        "Project deadline is next Friday.",
+        "Click here to get free vouchers.",
+        "The team meeting is at 3 PM sharp.",
+        "Get rich quick with this investment plan.",
+        "Reminder: Your appointment is at 10 AM.",
+        "Win a brand new car by entering this contest.",
+        "Good morning, hope you have a great day.",
+        "Unlock exclusive deals just for you.",
+        "Are you available for a quick call?",
+        "Hurry! This deal expires tonight.",
+        "Don’t forget to submit your report.",
+        "Claim your free crypto tokens now.",
+        "Lunch meeting confirmed for 1 PM.",
+        "Get a personal loan with low interest.",
+        "Looking forward to our catch-up session.",
+        "Click to activate your free membership.",
+        "Your order has been shipped successfully.",
+        "Earn $1000 a day with zero investment.",
+        "Let’s finalize the project details today.",
+        "Exclusive credit card offer for you.",
+        "We should meet up this weekend.",
+        "Flash sale: Up to 70% off on products.",
+        "Could you send me the latest invoice?",
+        "This is your last chance to win big.",
+        "The document you requested is attached.",
+        "Upgrade your account to premium now.",
+        "Dinner plans for tonight?",
+        "Get free rewards by filling this survey.",
+        "Weekly team sync at 2 PM.",
+        "Lowest insurance rates available for you.",
+        "Join us for a webinar on AI trends.",
+        "You’ve been shortlisted for a cash prize.",
+        "Family gathering on Sunday confirmed.",
+        "Redeem your free shopping coupons.",
+        "Let’s go over the project roadmap.",
+        "Win exciting prizes in our lucky draw.",
+        "Are we still on for the meeting tomorrow?",
+        "Free subscription for first 100 sign-ups.",
+        "Please send the updated presentation slides."
+    ],
+    'label': [
+        1, 1, 1, 0, 0, 1, 0, 1, 0, 1,
+        1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+        1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+        1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+        1, 0, 1, 0, 1, 0, 1, 0, 1, 0
+    ]
+}
+
+
+# Convert to DataFrame
+df = pd.DataFrame(data)
+
+# Vectorize messages
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(df['message'])
+y = df['label']
+
+# Train Naive Bayes Model
+model = MultinomialNB()
+model.fit(X, y)
+
+# Save model and vectorizer as .pkl files
+with open('model.pkl', 'wb') as f:
+    pickle.dump(model, f)
+
+with open('vectorizer.pkl', 'wb') as f:
+    pickle.dump(vectorizer, f)
+
+print("Model and Vectorizer saved successfully!")
+
+    #RUN THIS AFTER THE SCRIPT
+python train_spam_model.py
+
+   #check your folder for model.pkl and vectorizer.pkl
+
+ #move to your ec2 ,or location of your app
+
+scp -i "C:/Users/User/Downloads/vockey1.pem" model.pkl ubuntu@34.201.67.68:/home/ubuntu/spam-app/backend/
+scp -i "C:/Users/User/Downloads/vockey1.pem" vectorizer.pkl ubuntu@34.201.67.68:/home/ubuntu/spam-app/backend/
+

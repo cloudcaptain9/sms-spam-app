@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Spam Detector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        #message {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        #message:focus {
+            border-color: #4a5568;
+            box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 55, 72, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        #result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .spam {
+            background: #fed7d7;
+            color: #c53030;
+            border: 2px solid #feb2b2;
+        }
+
+        .not-spam {
+            background: #c6f6d5;
+            color: #2f855a;
+            border: 2px solid #9ae6b4;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SMS Spam Detector 🚀</h1>
+        
+        <div class="input-group">
+            <label for="message">Enter SMS Message</label>
+            <input type="text" id="message" placeholder="Type your SMS message here..." />
+        </div>
+        
+        <button onclick="checkSpam()">Analyze Message</button>
+        
+        <div id="result"></div>
+        
+        <div class="footer">
+            Enter any SMS message to check if it might be spam
+        </div>
+    </div>
+
+    <script>
+        function checkSpam() {
+            const message = document.getElementById('message').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!message) {
+                resultDiv.innerHTML = '⚠️ Please enter a message to analyze';
+                resultDiv.className = 'spam show';
+                return;
+            }
+            
+            // Simple spam detection logic (you can replace with your own algorithm)
+            const spamKeywords = [
+                'free', 'win', 'winner', 'congratulations', 'prize', 'urgent', 'limited time',
+                'click here', 'call now', 'act now', 'exclusive', 'guaranteed', 'risk-free',
+                'money back', 'no obligation', 'cash', 'loan', 'credit', 'debt', 'investment'
+            ];
+            
+            const messageLower = message.toLowerCase();
+            const foundSpamWords = spamKeywords.filter(keyword => 
+                messageLower.includes(keyword.toLowerCase())
+            );
+            
+            // Additional checks
+            const hasMultipleExclamations = (message.match(/!/g) || []).length > 2;
+            const hasAllCaps = message === message.toUpperCase() && message.length > 10;
+            const hasNumbers = /\d/.test(message);
+            const hasSpecialChars = /[$%#@]/.test(message);
+            
+            let spamScore = foundSpamWords.length;
+            if (hasMultipleExclamations) spamScore += 1;
+            if (hasAllCaps) spamScore += 2;
+            if (hasNumbers && hasSpecialChars) spamScore += 1;
+            
+            resultDiv.classList.remove('show');
+            
+            setTimeout(() => {
+                if (spamScore >= 2) {
+                    resultDiv.innerHTML = '🚨 Likely SPAM - Be cautious!';
+                    resultDiv.className = 'spam show';
+                } else {
+                    resultDiv.innerHTML = '✅ Appears to be legitimate';
+                    resultDiv.className = 'not-spam show';
+                }
+            }, 100);
+        }
+        
+        // Allow Enter key to trigger analysis
+        document.getElementById('message').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkSpam();
+            }
+        });
+    </script>
+</body>
+</html>
