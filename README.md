@@ -6,19 +6,22 @@ This is a simple **SMS Spam Detection web app**. Users can type a message on the
 
 ## Folder Structure
 
+## 📂 Project Structure
+
+```plaintext
 root/
-│
 ├─ frontend/
-│ ├─ index.html # Webpage for user input
-│ └─ script.js # Frontend JavaScript to call backend /predict
+│  ├─ index.html        # Webpage for user input
+│  └─ script.js         # Frontend JavaScript to call backend `/predict`
 │
-└─ backend/
-├─ app.py # Flask backend serving API + frontend
-└─ models/
-├─ model.pkl # Trained machine learning model
-└─ vectorizer.pkl # Text vectorizer for preprocessing
-├─ requirements.txt # Python dependencies
-└─ Dockerfile # Docker setup for backend + frontend
+├─ backend/
+│  ├─ app.py            # Flask backend serving API + frontend
+│  ├─ requirements.txt  # Python dependencies
+│  ├─ Dockerfile        # Docker setup for backend + frontend
+│  └─ models/
+│     ├─ model.pkl      # Trained machine learning model
+│     └─ vectorizer.pkl # Text vectorizer for preprocessing
+
 
 
 ---
