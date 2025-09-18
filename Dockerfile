@@ -3,7 +3,7 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 # Copy backend files
-COPY app.py models/ ./ 
+COPY app.py models/ ./models/ 
 # If you want, copy .env too: COPY .env ./
 # Install dependencies
 COPY requirements.txt .
